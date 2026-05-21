@@ -1,0 +1,330 @@
+.starfield {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: transparent;
+}
+
+.starfield__star {
+  position: absolute;
+  width: var(--star-size, 1px);
+  height: var(--star-size, 1px);
+  border-radius: 50%;
+  opacity: var(--star-opacity, 0.4);
+  animation-delay: var(--star-delay, 0s);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: opacity, transform, filter;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Base star styling */
+.starfield__star {
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.98), rgba(105, 231, 255, 0.42) 46%, transparent 76%);
+  box-shadow:
+    0 0 calc(var(--star-size, 1px) * 2.2) rgba(255, 255, 255, 0.78),
+    0 0 calc(var(--star-size, 1px) * 5.2) rgba(76, 226, 255, 0.32);
+}
+
+:root[data-theme='light'] .starfield__star {
+  opacity: calc(var(--star-opacity, 0.4) * 0.52);
+  background: radial-gradient(circle at 30% 30%, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.15) 50%, transparent);
+  box-shadow: 
+    0 0 var(--star-size, 1px) rgba(15, 23, 42, 0.5),
+    0 0 calc(var(--star-size, 1px) * 2) rgba(94, 109, 160, 0.25);
+}
+
+:root[data-theme='dark'] .starfield__star {
+  opacity: calc(var(--star-opacity, 0.4) * 0.98);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.96), rgba(115, 246, 255, 0.58) 42%, rgba(29, 226, 166, 0.2) 72%, transparent);
+  box-shadow: 
+    0 0 calc(var(--star-size, 1px) * 1.7) rgba(255, 255, 255, 0.78),
+    0 0 calc(var(--star-size, 1px) * 4.6) rgba(74, 231, 255, 0.44),
+    0 0 calc(var(--star-size, 1px) * 7.5) rgba(20, 214, 160, 0.2);
+}
+
+/* Intense stars (brighter) */
+.starfield__star--intense {
+  opacity: calc(var(--star-opacity, 0.4) * 1.6);
+}
+
+:root[data-theme='light'] .starfield__star--intense {
+  opacity: calc(var(--star-opacity, 0.4) * 0.7);
+  box-shadow: 
+    0 0 var(--star-size, 1px) rgba(15, 23, 42, 0.7),
+    0 0 calc(var(--star-size, 1px) * 3) rgba(94, 109, 160, 0.4);
+}
+
+:root[data-theme='dark'] .starfield__star--intense {
+  opacity: calc(var(--star-opacity, 0.4) * 1.28);
+  box-shadow: 
+    0 0 calc(var(--star-size, 1px) * 2.2) rgba(255, 255, 255, 0.9),
+    0 0 calc(var(--star-size, 1px) * 6) rgba(98, 239, 255, 0.56),
+    0 0 calc(var(--star-size, 1px) * 10) rgba(22, 218, 160, 0.26);
+}
+
+/* Animation Type 1: Flowing spiral upward */
+.starfield__star--anim-0 {
+  animation: starfield-spiral-flow var(--star-duration, 8s) var(--star-delay, 0s) ease-in-out infinite;
+}
+
+/* Animation Type 2: Gentle wave side to side */
+.starfield__star--anim-1 {
+  animation: starfield-wave-motion var(--star-duration, 8s) var(--star-delay, 0s) ease-in-out infinite;
+}
+
+/* Animation Type 3: Diagonal drift */
+.starfield__star--anim-2 {
+  animation: starfield-diagonal-drift var(--star-duration, 8s) var(--star-delay, 0s) ease-in-out infinite;
+}
+
+/* Animation Type 4: Circular orbit */
+.starfield__star--anim-3 {
+  animation: starfield-orbit-motion var(--star-duration, 8s) var(--star-delay, 0s) linear infinite;
+}
+
+/* Animation Type 5: Pulsing fade with subtle float */
+.starfield__star--anim-4 {
+  animation: starfield-pulse-float var(--star-duration, 8s) var(--star-delay, 0s) ease-in-out infinite;
+}
+
+/* SPIRAL FLOW - upward with twisting */
+@keyframes starfield-spiral-flow {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(0.7);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: calc(var(--star-opacity, 0.4) * 0.5);
+  }
+
+  50% {
+    transform: translate3d(
+      calc(var(--offset-x, 0px) * 1.2),
+      calc(var(--travel-y, 180px) * -0.5),
+      0
+    ) rotate(180deg) scale(1);
+    opacity: var(--star-opacity, 0.4);
+  }
+
+  75% {
+    opacity: calc(var(--star-opacity, 0.4) * 0.6);
+  }
+
+  100% {
+    transform: translate3d(
+      calc(var(--offset-x, 0px) * 1.4),
+      calc(var(--travel-y, 180px) * -1),
+      0
+    ) rotate(360deg) scale(0.7);
+    opacity: 0;
+  }
+}
+
+/* WAVE MOTION - smooth side-to-side waves */
+@keyframes starfield-wave-motion {
+  0% {
+    transform: translate3d(-30px, 0, 0) scale(0.8);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: calc(var(--star-opacity, 0.4) * 0.5);
+  }
+
+  35% {
+    transform: translate3d(20px, calc(var(--travel-y, 180px) * -0.24), 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(-20px, calc(var(--travel-y, 180px) * -0.5), 0) scale(1);
+    opacity: var(--star-opacity, 0.4);
+  }
+
+  65% {
+    transform: translate3d(25px, calc(var(--travel-y, 180px) * -0.76), 0) scale(1);
+  }
+
+  80% {
+    opacity: calc(var(--star-opacity, 0.4) * 0.5);
+  }
+
+  100% {
+    transform: translate3d(-15px, calc(var(--travel-y, 180px) * -1), 0) scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* DIAGONAL DRIFT - smooth diagonal motion */
+@keyframes starfield-diagonal-drift {
+  0% {
+    transform: translate3d(-40px, 40px, 0) scale(0.6);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: calc(var(--star-opacity, 0.4) * 0.4);
+  }
+
+  50% {
+    transform: translate3d(var(--offset-x, 0px), calc(var(--travel-y, 180px) * -0.45), 0) scale(1);
+    opacity: var(--star-opacity, 0.4);
+  }
+
+  75% {
+    opacity: calc(var(--star-opacity, 0.4) * 0.5);
+  }
+
+  100% {
+    transform: translate3d(calc(var(--offset-x, 0px) * 1.5), calc(var(--travel-y, 180px) * -1), 0) scale(0.6);
+    opacity: 0;
+  }
+}
+
+/* ORBIT MOTION - circular orbits with rotation */
+@keyframes starfield-orbit-motion {
+  0% {
+    transform: translate(var(--offset-x, 0px), var(--offset-y, 0px)) rotate(0deg) scale(0.7);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: calc(var(--star-opacity, 0.4) * 0.6);
+  }
+
+  50% {
+    transform: translate(var(--offset-x, 0px), var(--offset-y, 0px)) rotate(180deg) scale(1);
+    opacity: var(--star-opacity, 0.4);
+  }
+
+  80% {
+    opacity: calc(var(--star-opacity, 0.4) * 0.6);
+  }
+
+  100% {
+    transform: translate(var(--offset-x, 0px), var(--offset-y, 0px)) rotate(360deg) scale(0.7);
+    opacity: 0;
+  }
+}
+
+/* PULSE FLOAT - breathing effect with upward movement */
+@keyframes starfield-pulse-float {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.5);
+    opacity: 0;
+    filter: blur(1px);
+  }
+
+  15% {
+    opacity: calc(var(--star-opacity, 0.4) * 0.7);
+  }
+
+  30% {
+    transform: translate3d(var(--offset-x, 0px), calc(var(--travel-y, 180px) * -0.18), 0) scale(1.2);
+    filter: blur(0px);
+  }
+
+  50% {
+    transform: translate3d(calc(var(--offset-x, 0px) * -0.5), calc(var(--travel-y, 180px) * -0.52), 0) scale(1);
+    opacity: var(--star-opacity, 0.4);
+  }
+
+  70% {
+    transform: translate3d(var(--offset-x, 0px), calc(var(--travel-y, 180px) * -0.82), 0) scale(1.1);
+    filter: blur(0.5px);
+  }
+
+  85% {
+    opacity: calc(var(--star-opacity, 0.4) * 0.5);
+  }
+
+  100% {
+    transform: translate3d(0, calc(var(--travel-y, 180px) * -1.08), 0) scale(0.5);
+    opacity: 0;
+    filter: blur(1px);
+  }
+}
+
+/* Twinkle effect for all stars */
+.starfield__star::after {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  border-radius: 50%;
+  background: inherit;
+  filter: blur(2px);
+  opacity: 0;
+  animation: starfield-twinkle calc(var(--star-duration, 8s) * 0.4) var(--star-delay, 0s) ease-in-out infinite;
+}
+
+.starfield__star--linked::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--line-length, 34px);
+  height: 1px;
+  transform: translateY(-50%) rotate(var(--line-angle, 0deg));
+  transform-origin: left center;
+  border-radius: 999px;
+  opacity: calc(var(--star-opacity, 0.4) * 0.42);
+  background: linear-gradient(90deg, rgba(127, 248, 255, 0.62), rgba(35, 218, 160, 0.28), transparent);
+  filter: drop-shadow(0 0 4px rgba(92, 229, 255, 0.28));
+}
+
+:root[data-theme='light'] .starfield__star--linked::before {
+  opacity: calc(var(--star-opacity, 0.4) * 0.2);
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.36), rgba(37, 99, 235, 0.18), transparent);
+  filter: none;
+}
+
+@keyframes starfield-twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .starfield__star,
+  .starfield__star--anim-0,
+  .starfield__star--anim-1,
+  .starfield__star--anim-2,
+  .starfield__star--anim-3,
+  .starfield__star--anim-4 {
+    animation: none;
+    opacity: calc(var(--star-opacity, 0.4) * 0.5);
+  }
+
+  .starfield__star::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  :root[data-theme='light'] .starfield__star {
+    opacity: calc(var(--star-opacity, 0.4) * 0.35);
+  }
+
+  :root[data-theme='dark'] .starfield__star {
+    opacity: calc(var(--star-opacity, 0.4) * 0.92);
+  }
+
+  .starfield__star--linked::before {
+    width: calc(var(--line-length, 34px) * 0.72);
+    opacity: calc(var(--star-opacity, 0.4) * 0.28);
+  }
+}

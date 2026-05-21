@@ -1,0 +1,33 @@
+.split-text,
+.split-parent {
+  margin: 0;
+  display: block;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.split-line {
+  display: block;
+  overflow: clip;
+}
+
+.split-word,
+.split-char {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+}
+
+.split-word {
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .split-word,
+  .split-char {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+}
